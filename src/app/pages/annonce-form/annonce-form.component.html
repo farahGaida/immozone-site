@@ -1,0 +1,90 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-lg">
+      <h2 class="text-2xl font-semibold text-indigo-700 mb-6 text-center">
+        {{ isEditMode ? 'Edit' : 'Add' }} a Listing
+      </h2>
+  
+      <form [formGroup]="annonceForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <!-- Title -->
+        <div>
+          <label class="block text-gray-700 font-medium">Title:</label>
+          <input type="text" formControlName="titre" required
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105">
+        </div>
+  
+        <!-- Description -->
+        <div>
+          <label class="block text-gray-700 font-medium">Description:</label>
+          <textarea formControlName="description" required
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105"></textarea>
+        </div>
+  
+        <!-- Property Type and Wilaya in the same line -->
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Property Type -->
+          <div>
+            <label class="block text-gray-700 font-medium">Type:</label>
+            <select formControlName="type" required
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105">
+              <option value="sale">Sale</option>
+              <option value="rental">Rental</option>
+            </select>
+          </div>
+  
+          <!-- Wilaya -->
+          <div>
+            <label class="block text-gray-700 font-medium">Wilaya:</label>
+            <select formControlName="wilaya" required
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105">
+              <option *ngFor="let wilaya of wilayas" [value]="wilaya.name">{{ wilaya.name }}</option>
+            </select>
+          </div>
+        </div>
+  
+        <!-- Number of Rooms and Price in the same line -->
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Number of Rooms -->
+          <div>
+            <label class="block text-gray-700 font-medium">Number of Rooms:</label>
+            <input type="number" formControlName="pieces" min="1" required
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105">
+          </div>
+  
+          <!-- Price -->
+          <div>
+            <label class="block text-gray-700 font-medium">Price (TND):</label>
+            <input type="number" formControlName="prix" min="0" required
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105">
+          </div>
+        </div>
+  
+        <!-- Photos -->
+        <div>
+          <label class="block text-gray-700 font-medium">Photos (max. 5):</label>
+          <input type="file" (change)="onFileChange($event)" multiple
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105" [attr.accept]="'image/*'">
+          <small class="text-gray-500 mt-2">You can upload up to 5 images.</small>
+        </div>
+  
+        <!-- Photo Previews -->
+        <div class="flex flex-wrap gap-4 mt-4">
+          <div *ngFor="let preview of previewUrls" class="w-16 h-16">
+            <img [src]="preview" class="object-cover w-full h-full rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105">
+          </div>
+        </div>
+  
+        <!-- Buttons -->
+        <div class="flex justify-between mt-6">
+            <button type="submit" [disabled]="annonceForm.invalid"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transform transition-all duration-300 hover:scale-105">
+            {{ isEditMode ? 'Edit' : 'Add' }}
+          </button>
+          <button type="button" (click)="cancel()"
+            class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg transform transition-all duration-300 hover:scale-105">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
