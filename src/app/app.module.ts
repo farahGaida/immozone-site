@@ -14,6 +14,7 @@ import { NavbarStyleDirective } from './directives/navbar-style.directive';
 import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AnnonceFormComponent } from './pages/annonce-form/annonce-form.component';
+import { ContactComponent } from './pages/contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AnnonceFormComponent } from './pages/annonce-form/annonce-form.componen
     ForRentComponent,
     NavbarStyleDirective,
     DashboardComponent,
-    AnnonceFormComponent
+    AnnonceFormComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
