@@ -1,0 +1,56 @@
+<div class="p-6 bg-gray-50 mt-1">
+    <!-- Retourner à la page précédente -->
+    <div class="text-right">
+        <button (click)="goBack()" class="mb-6 px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300">
+          Back
+        </button>
+      </div>
+  
+    <!-- Card principale -->
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-3xl mx-auto mt-1">
+      <!-- Titre de l'annonce -->
+      <h1 class="text-3xl font-semibold text-gray-800">{{ listing.title }}</h1>
+  
+      <!-- Description de l'annonce -->
+      <p class="text-lg text-gray-600 mt-4">{{ listing.description }}</p>
+  
+      <!-- Détails -->
+      <div class="mt-4 text-gray-700">
+        <p><strong>Type:</strong> {{ listing.type }}</p>
+        <p><strong>Wilaya:</strong> {{ listing.wilaya }}</p>
+        <p><strong>Number of Rooms:</strong> {{ listing.numberOfRooms }}</p>
+        <p><strong>Price (TND):</strong> {{ listing.price | currency:'TND' }}</p>
+      </div>
+  
+      <!-- Affichage des photos -->
+      <div class="mt-6">
+        <!-- Image principale -->
+        <div class="relative mb-6">
+          <img [src]="currentImage" alt="Large image" class="w-full h-96 object-cover rounded-lg shadow-md">
+        </div>
+  
+        <!-- Miniatures des images -->
+        <div class="grid grid-cols-4 gap-4">
+          <div *ngFor="let photo of listing.photos">
+            <img [src]="photo" alt="Listing photo" class="w-full h-24 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300"
+                 (click)="changeMainImage(photo)">
+          </div>
+        </div>
+      </div>
+  
+      <!-- Boutons Update et Delete -->
+      <div class="mt-8 flex justify-end space-x-6">
+        <!-- Update Button -->
+        <button (click)="onUpdateListing()" class="px-6 py-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition duration-300">
+          Update
+        </button>
+  
+        <!-- Delete Button -->
+        <button (click)="onDeleteListing()" class="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300">
+          Delete
+        </button>
+      </div>
+    </div>
+    
+  </div>
+  

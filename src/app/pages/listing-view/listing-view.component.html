@@ -1,0 +1,54 @@
+<div class="flex flex-col items-center p-4">
+    <!-- Filter Section -->
+    <div class="flex items-center justify-between w-full max-w-4xl mb-4 gap-4">
+      <!-- Search Bar - Prend maintenant l'espace disponible -->
+      <div class="flex-1">
+        <div class="relative">
+          <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            (input)="filteredListings()"
+            placeholder="Rechercher une annonce"
+            class="w-full pl-12 pr-4 py-3 rounded-full border border-gray-300 shadow-md focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:border-indigo-500 text-gray-700 text-lg transition duration-300"
+          />
+          <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+            <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Filtre - Largeur fixe -->
+      <div class="w-40">  <!-- Augmentation légère de la largeur pour meilleure lisibilité -->
+        <select [(ngModel)]="selectedFilter" 
+                class="w-full p-3 rounded-lg border border-gray-300 shadow-md focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:border-indigo-500 text-gray-700 text-lg transition duration-300 dark:border-gray-700 dark:bg-dark dark:text-light">
+          <option value="all">All</option>
+          <option value="rent">Rent</option>
+          <option value="sale">Sale</option>
+        </select>
+      </div>
+    </div>
+  
+    <!-- Listings Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-screen-xl">
+      <div *ngFor="let listing of filteredListings()" class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <img [src]="listing.imageUrl" alt="Listing image" class="w-full h-48 object-cover">
+        <div class="p-4">
+          <h3 class="text-xl font-semibold">{{ listing.title }}</h3>
+          <p class="text-gray-600">{{ listing.location }}</p>
+          <div class="mt-2 flex space-x-2">
+            <!-- <button (click)="onViewDetails(listing.id)" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Details</button> -->
+            <button (click)="onViewDetails(listing.id)" 
+            [routerLink]="['/dashboard/admin/view', listing.id]"  
+            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+      Details
+    </button>
+            <button (click)="onUpdateListing(listing.id)" class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700">Update</button>
+            <button (click)="onDeleteListing(listing.id)" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

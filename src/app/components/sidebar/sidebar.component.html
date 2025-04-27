@@ -1,0 +1,94 @@
+<!-- sidebar.component.html -->
+<div class="flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
+
+    <!-- Sidebar -->
+    <div
+      *ngIf="isSidebarOpen"
+      @slideInOut
+      class="fixed inset-y-0 z-10 flex w-80"
+    >
+      <!-- Curvy shape -->
+      <svg
+        class="absolute inset-0 w-full h-full text-white"
+        style="filter: drop-shadow(10px 0 10px #00000030)"
+        preserveAspectRatio="none"
+        viewBox="0 0 309 800"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M268.487 0H0V800H247.32C207.957 725 207.975 492.294 268.487 367.647C329 243 314.906 53.4314 268.487 0Z"
+        />
+      </svg>
+  
+      <!-- Sidebar content -->
+      <div class="z-10 flex flex-col flex-1">
+        <div class="flex items-center justify-between flex-shrink-0 w-64 p-4">
+          <!-- Logo -->
+          
+          <h1 class="w-16 h-auto text-blue-600 text-3xl">  <!-- Ex: text-3xl (taille "extra-large") -->
+            <strong>ImmoZone</strong>
+          </h1>
+          
+  
+          <!-- Close btn -->
+          <button (click)="toggleSidebar()" class="p-1 rounded-lg focus:outline-none focus:ring">
+            <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+  
+        <div class="flex flex-col h-full w-64">
+            <!-- Navigation group - Top section -->
+            <div class="flex-1 p-4 space-y-2">  <!-- space-y-2 pour espacement serré -->
+              <!-- Browse Ads -->
+              <a routerLink="admin/view" class="flex items-center space-x-2 hover:bg-gray-100 p-2 rounded-lg">
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span>View Listings</span>
+              </a>
+          
+              <!-- Add Ad -->
+              <a routerLink="admin/add" class="flex items-center space-x-2 hover:bg-gray-100 p-2 rounded-lg">
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Post a Listing</span>
+              </a>
+          
+              <!-- Contact -->
+              <a routerLink="/contact" class="flex items-center space-x-2 hover:bg-gray-100 p-2 rounded-lg">
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <span>Contact</span>
+              </a>
+            </div>
+          
+            <!-- Logout - Fixed bottom -->
+            <div class="p-4 border-t border-gray-200">  <!-- Bordure supérieure pour séparation visuelle -->
+              <button class="flex items-center space-x-2 w-full hover:bg-gray-100 p-2 rounded-lg">
+                <svg aria-hidden="true" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
+      </div>
+    </div>
+  
+    <!-- Page content -->
+    <main class="flex flex-col items-center justify-center flex-1">
+      <button (click)="toggleSidebar()" class="fixed p-2 text-white bg-black rounded-lg top-5 left-5">
+        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      
+    </main>
+  
+  </div>
+  

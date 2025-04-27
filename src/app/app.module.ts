@@ -15,6 +15,10 @@ import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AnnonceFormComponent } from './pages/annonce-form/annonce-form.component';
 import { ContactComponent } from './pages/contact/contact.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { CardViewListingComponent } from './components/card-view-listing/card-view-listing.component';
+import { ListingViewComponent } from './pages/listing-view/listing-view.component';
+import { ListingDetailsComponent } from './pages/listing-details/listing-details.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,11 @@ import { ContactComponent } from './pages/contact/contact.component';
     NavbarStyleDirective,
     DashboardComponent,
     AnnonceFormComponent,
-    ContactComponent
+    ContactComponent,
+    SidebarComponent,
+    CardViewListingComponent,
+    ListingViewComponent,
+    ListingDetailsComponent
   ],
   imports: [
     BrowserModule,

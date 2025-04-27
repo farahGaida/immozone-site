@@ -1,0 +1,10 @@
+/* Smooth hover animation for links */
+a {
+    transition: color 0.3s ease;
+  }
+  
+  /* A small shadow for the sidebar */
+  aside {
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  }
+  
