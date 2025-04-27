@@ -42,6 +42,6 @@ export class LoginComponent implements OnInit {
     localStorage.setItem('isLoggedIn', 'true'); // Sauvegarder l'état de la connexion
 
     // Rediriger l'utilisateur vers le tableau de bord (dashboard)
-    this.router.navigate(['/dashboard']); // Redirection vers le dashboard
+    this.router.navigate(['/dashboard/admin/view']); // Redirection vers le dashboard
   }
 }
