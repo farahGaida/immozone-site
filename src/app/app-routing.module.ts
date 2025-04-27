@@ -10,10 +10,12 @@ import { AuthGuard } from './guards/auth.guard';
 import { AnnonceFormComponent } from './pages/annonce-form/annonce-form.component';
 import { ListingViewComponent } from './pages/listing-view/listing-view.component';
 import { ListingDetailsComponent } from './pages/listing-details/listing-details.component';
+import { ContactComponent } from './pages/contact/contact.component';
 
 const routes: Routes = [{ path: '', component: HomeComponent },
   { path: 'rent', component: ForRentComponent },
   { path: 'sale', component: ForSaleComponent },
+  { path: 'contact', component: ContactComponent },
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] ,  children: [
     { path: 'admin/view', component: ListingViewComponent },

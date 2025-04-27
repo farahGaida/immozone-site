@@ -1,1 +1,70 @@
-<p>contact works!</p>
+<div class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Background Video -->
+    <video autoplay muted loop playsinline class="absolute w-full h-full object-cover">
+      <source src="/assets/contact.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  
+    <!-- Form Container -->
+    <div class="relative z-10 bg-white bg-opacity-80 p-8 rounded-lg shadow-lg w-full max-w-md">
+      <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Contact Us</h2>
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+        <!-- Email -->
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="w-full px-4 py-2 rounded-lg border"
+            [ngClass]="{'border-red-500': contactForm.get('email')?.invalid && contactForm.get('email')?.touched, 'border-gray-300': !(contactForm.get('email')?.invalid && contactForm.get('email')?.touched)}"
+            placeholder="Enter your email"
+          />
+          <div *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
+            Please enter a valid email.
+          </div>
+        </div>
+  
+        <!-- Subject -->
+        <div class="mb-4">
+          <label for="subject" class="block text-gray-700 font-semibold mb-2">Subject</label>
+          <input
+            type="text"
+            id="subject"
+            formControlName="subject"
+            class="w-full px-4 py-2 rounded-lg border"
+            [ngClass]="{'border-red-500': contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched, 'border-gray-300': !(contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched)}"
+            placeholder="Enter the subject"
+          />
+          <div *ngIf="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched" class="text-red-500 text-sm mt-1">
+            Subject must be at least 3 characters.
+          </div>
+        </div>
+  
+        <!-- Message -->
+        <div class="mb-6">
+          <label for="message" class="block text-gray-700 font-semibold mb-2">Message</label>
+          <textarea
+            id="message"
+            formControlName="message"
+            rows="5"
+            class="w-full px-4 py-2 rounded-lg border"
+            [ngClass]="{'border-red-500': contactForm.get('message')?.invalid && contactForm.get('message')?.touched, 'border-gray-300': !(contactForm.get('message')?.invalid && contactForm.get('message')?.touched)}"
+            placeholder="Type your message..."
+          ></textarea>
+          <div *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched" class="text-red-500 text-sm mt-1">
+            Message must be at least 10 characters.
+          </div>
+        </div>
+  
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
+        >
+          Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+  
