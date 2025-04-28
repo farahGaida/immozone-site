@@ -1,90 +1,146 @@
-<div class="flex items-center justify-center h-screen bg-gray-100">
-  <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-lg mt-10 ">
-      <h2 class="text-2xl font-semibold text-indigo-700 mb-6 text-center">
-        {{ isEditMode ? 'Edit' : 'Add' }} a Listing
-      </h2>
-  
-      <form [formGroup]="annonceForm" (ngSubmit)="onSubmit()" class="space-y-4">
-        <!-- Title -->
-        <div>
-          <label class="block text-gray-700 font-medium">Title:</label>
-          <input type="text" formControlName="titre" required
-            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105">
-        </div>
-  
-        <!-- Description -->
-        <div>
-          <label class="block text-gray-700 font-medium">Description:</label>
-          <textarea formControlName="description" required
-            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105"></textarea>
-        </div>
-  
-        <!-- Property Type and Wilaya in the same line -->
-        <div class="grid grid-cols-2 gap-4">
-          <!-- Property Type -->
+<div class="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-6">
+          Ajouter une nouvelle annonce
+        </h3>
+
+        <form [formGroup]="annonceForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <!-- Title -->
           <div>
-            <label class="block text-gray-700 font-medium">Type:</label>
-            <select formControlName="type" required
-              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105">
-              <option value="sale">Sale</option>
-              <option value="rental">Rental</option>
+            <label for="title" class="block text-sm font-medium text-gray-700">Titre</label>
+            <input type="text" id="title" formControlName="title"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              [ngClass]="{'border-red-500': submitted && f['title'].errors}">
+            <div *ngIf="submitted && f['title'].errors" class="text-red-500 text-xs mt-1">
+              <div *ngIf="f['title'].errors['required']">Le titre est requis</div>
+              <div *ngIf="f['title'].errors['minlength']">Le titre doit contenir au moins 5 caractères</div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+            <textarea id="description" formControlName="description" rows="4"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              [ngClass]="{'border-red-500': submitted && f['description'].errors}"></textarea>
+            <div *ngIf="submitted && f['description'].errors" class="text-red-500 text-xs mt-1">
+              <div *ngIf="f['description'].errors['required']">La description est requise</div>
+              <div *ngIf="f['description'].errors['minlength']">La description doit contenir au moins 20 caractères</div>
+            </div>
+          </div>
+
+          <!-- Type -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Type</label>
+            <div class="mt-1">
+              <select formControlName="type"
+                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <option value="sale">À vendre</option>
+                <option value="rent">À louer</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div>
+            <label for="location" class="block text-sm font-medium text-gray-700">Ville</label>
+            <select id="location" formControlName="location"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              [ngClass]="{'border-red-500': submitted && f['location'].errors}">
+              <option value="">Sélectionnez une ville</option>
+              <option *ngFor="let city of cities" [value]="city">{{city}}</option>
             </select>
+            <div *ngIf="submitted && f['location'].errors" class="text-red-500 text-xs mt-1">
+              <div *ngIf="f['location'].errors['required']">La ville est requise</div>
+            </div>
           </div>
-  
-          <!-- Wilaya -->
-          <div>
-            <label class="block text-gray-700 font-medium">Wilaya:</label>
-            <select formControlName="wilaya" required
-              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105">
-              <option *ngFor="let wilaya of wilayas" [value]="wilaya.name">{{ wilaya.name }}</option>
-            </select>
-          </div>
-        </div>
-  
-        <!-- Number of Rooms and Price in the same line -->
-        <div class="grid grid-cols-2 gap-4">
-          <!-- Number of Rooms -->
-          <div>
-            <label class="block text-gray-700 font-medium">Number of Rooms:</label>
-            <input type="number" formControlName="pieces" min="1" required
-              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105">
-          </div>
-  
+
           <!-- Price -->
           <div>
-            <label class="block text-gray-700 font-medium">Price (TND):</label>
-            <input type="number" formControlName="prix" min="0" required
-              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105">
+            <label for="price" class="block text-sm font-medium text-gray-700">Prix</label>
+            <input type="number" id="price" formControlName="price"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              [ngClass]="{'border-red-500': submitted && f['price'].errors}">
+            <div *ngIf="submitted && f['price'].errors" class="text-red-500 text-xs mt-1">
+              <div *ngIf="f['price'].errors['required']">Le prix est requis</div>
+              <div *ngIf="f['price'].errors['min']">Le prix doit être positif</div>
+            </div>
           </div>
-        </div>
-  
-        <!-- Photos -->
-        <div>
-          <label class="block text-gray-700 font-medium">Photos (max. 5):</label>
-          <input type="file" (change)="onFileChange($event)" multiple
-            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105" [attr.accept]="'image/*'">
-          <small class="text-gray-500 mt-2">You can upload up to 5 images.</small>
-        </div>
-  
-        <!-- Photo Previews -->
-        <div class="flex flex-wrap gap-4 mt-4">
-          <div *ngFor="let preview of previewUrls" class="w-16 h-16">
-            <img [src]="preview" class="object-cover w-full h-full rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105">
+
+          <!-- Bedrooms -->
+          <div>
+            <label for="bedrooms" class="block text-sm font-medium text-gray-700">Nombre de chambres</label>
+            <input type="number" id="bedrooms" formControlName="bedrooms"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              [ngClass]="{'border-red-500': submitted && f['bedrooms'].errors}">
+            <div *ngIf="submitted && f['bedrooms'].errors" class="text-red-500 text-xs mt-1">
+              <div *ngIf="f['bedrooms'].errors['required']">Le nombre de chambres est requis</div>
+              <div *ngIf="f['bedrooms'].errors['min']">Le nombre de chambres doit être positif</div>
+            </div>
           </div>
-        </div>
-  
-        <!-- Buttons -->
-        <div class="flex justify-between mt-6">
-            <button type="submit" [disabled]="annonceForm.invalid"
-            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transform transition-all duration-300 hover:scale-105">
-            {{ isEditMode ? 'Edit' : 'Add' }}
-          </button>
-          <button type="button" (click)="cancel()"
-            class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg transform transition-all duration-300 hover:scale-105">
-            Cancel
-          </button>
-        </div>
-      </form>
+
+          <!-- Bathrooms -->
+          <div>
+            <label for="bathrooms" class="block text-sm font-medium text-gray-700">Nombre de salles de bain</label>
+            <input type="number" id="bathrooms" formControlName="bathrooms"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              [ngClass]="{'border-red-500': submitted && f['bathrooms'].errors}">
+            <div *ngIf="submitted && f['bathrooms'].errors" class="text-red-500 text-xs mt-1">
+              <div *ngIf="f['bathrooms'].errors['required']">Le nombre de salles de bain est requis</div>
+              <div *ngIf="f['bathrooms'].errors['min']">Le nombre de salles de bain doit être positif</div>
+            </div>
+          </div>
+
+          <!-- Area -->
+          <div>
+            <label for="area" class="block text-sm font-medium text-gray-700">Superficie (m²)</label>
+            <input type="number" id="area" formControlName="area"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              [ngClass]="{'border-red-500': submitted && f['area'].errors}">
+            <div *ngIf="submitted && f['area'].errors" class="text-red-500 text-xs mt-1">
+              <div *ngIf="f['area'].errors['required']">La superficie est requise</div>
+              <div *ngIf="f['area'].errors['min']">La superficie doit être positive</div>
+            </div>
+          </div>
+
+          <!-- Images -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Images</label>
+            <input type="file" multiple (change)="onFileChange($event)"
+              class="mt-1 block w-full text-sm text-gray-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-md file:border-0
+                file:text-sm file:font-semibold
+                file:bg-indigo-50 file:text-indigo-700
+                hover:file:bg-indigo-100">
+            <div class="mt-2 grid grid-cols-2 gap-2">
+              <div *ngFor="let url of previewUrls" class="relative">
+                <img [src]="url" class="w-full h-32 object-cover rounded">
+              </div>
+            </div>
+          </div>
+
+          <!-- Success Message -->
+          <div *ngIf="successMessage" class="text-green-500 text-sm">
+            {{ successMessage }}
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex justify-end space-x-4">
+            <button type="button" (click)="cancel()"
+              class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Annuler
+            </button>
+            <button type="submit"
+              class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Ajouter l'annonce
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
+</div>
   

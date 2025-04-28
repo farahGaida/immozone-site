@@ -59,17 +59,17 @@
               </a>
           
               <!-- Contact -->
-              <a routerLink="/contact" class="flex items-center space-x-2 hover:bg-gray-100 p-2 rounded-lg">
+              <a routerLink="admin/contacts" class="flex items-center space-x-2 hover:bg-gray-100 p-2 rounded-lg">
                 <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span>Contact</span>
+                <span>Contact Messages</span>
               </a>
             </div>
           
             <!-- Logout - Fixed bottom -->
-            <div class="p-4 border-t border-gray-200">  <!-- Bordure supérieure pour séparation visuelle -->
-              <button class="flex items-center space-x-2 w-full hover:bg-gray-100 p-2 rounded-lg">
+            <div class="p-4 border-t border-gray-200">
+              <button (click)="logout()" class="flex items-center space-x-2 w-full hover:bg-gray-100 p-2 rounded-lg">
                 <svg aria-hidden="true" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>

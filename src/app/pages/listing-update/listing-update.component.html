@@ -1,0 +1,125 @@
+<div class="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-6">Modifier l'annonce</h2>
+    
+    <form [formGroup]="listingForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Title -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Titre</label>
+        <input type="text" formControlName="title" 
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        <div *ngIf="f['title'].touched && f['title'].errors" class="text-red-500 text-sm mt-1">
+          <div *ngIf="f['title'].errors['required']">Le titre est requis</div>
+          <div *ngIf="f['title'].errors['minlength']">Le titre doit contenir au moins 5 caractères</div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea formControlName="description" rows="4"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+        <div *ngIf="f['description'].touched && f['description'].errors" class="text-red-500 text-sm mt-1">
+          <div *ngIf="f['description'].errors['required']">La description est requise</div>
+          <div *ngIf="f['description'].errors['minlength']">La description doit contenir au moins 20 caractères</div>
+        </div>
+      </div>
+
+      <!-- Price -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Prix (DT)</label>
+        <input type="number" formControlName="price" 
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        <div *ngIf="f['price'].touched && f['price'].errors" class="text-red-500 text-sm mt-1">
+          <div *ngIf="f['price'].errors['required']">Le prix est requis</div>
+          <div *ngIf="f['price'].errors['min']">Le prix doit être positif</div>
+        </div>
+      </div>
+
+      <!-- Type -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Type</label>
+        <select formControlName="type" 
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+          <option value="sale">Vente</option>
+          <option value="rent">Location</option>
+        </select>
+      </div>
+
+      <!-- Location -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Ville</label>
+        <select formControlName="location" 
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+          <option value="">Sélectionnez une ville</option>
+          <option *ngFor="let city of cities" [value]="city">{{city}}</option>
+        </select>
+        <div *ngIf="f['location'].touched && f['location'].errors" class="text-red-500 text-sm mt-1">
+          <div *ngIf="f['location'].errors['required']">La ville est requise</div>
+        </div>
+      </div>
+
+      <!-- Bedrooms -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Nombre de chambres</label>
+        <input type="number" formControlName="bedrooms" 
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        <div *ngIf="f['bedrooms'].touched && f['bedrooms'].errors" class="text-red-500 text-sm mt-1">
+          <div *ngIf="f['bedrooms'].errors['required']">Le nombre de chambres est requis</div>
+          <div *ngIf="f['bedrooms'].errors['min']">Le nombre de chambres doit être positif</div>
+        </div>
+      </div>
+
+      <!-- Bathrooms -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Nombre de salles de bain</label>
+        <input type="number" formControlName="bathrooms" 
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        <div *ngIf="f['bathrooms'].touched && f['bathrooms'].errors" class="text-red-500 text-sm mt-1">
+          <div *ngIf="f['bathrooms'].errors['required']">Le nombre de salles de bain est requis</div>
+          <div *ngIf="f['bathrooms'].errors['min']">Le nombre de salles de bain doit être positif</div>
+        </div>
+      </div>
+
+      <!-- Area -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Superficie (m²)</label>
+        <input type="number" formControlName="area" 
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        <div *ngIf="f['area'].touched && f['area'].errors" class="text-red-500 text-sm mt-1">
+          <div *ngIf="f['area'].errors['required']">La superficie est requise</div>
+          <div *ngIf="f['area'].errors['min']">La superficie doit être positive</div>
+        </div>
+      </div>
+
+      <!-- Images -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Photos</label>
+        <input type="file" multiple accept="image/*" (change)="onFileChange($event)"
+               class="mt-1 block w-full text-sm text-gray-500
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded-md file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-blue-50 file:text-blue-700
+                      hover:file:bg-blue-100">
+        <div class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div *ngFor="let url of previewUrls" class="relative">
+            <img [src]="url" class="w-full h-32 object-cover rounded-lg">
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end space-x-4">
+        <button type="button" (click)="cancel()"
+                class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Annuler
+        </button>
+        <button type="submit" [disabled]="listingForm.invalid"
+                class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Mettre à jour
+        </button>
+      </div>
+    </form>
+  </div>
+</div> 

@@ -2,12 +2,12 @@
     <!-- Retourner à la page précédente -->
     <div class="text-right">
         <button (click)="goBack()" class="mb-6 px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300">
-          Back
+          Retour
         </button>
       </div>
   
     <!-- Card principale -->
-    <div class="bg-white p-8 rounded-lg shadow-lg max-w-3xl mx-auto mt-1">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-3xl mx-auto mt-1" *ngIf="listing">
       <!-- Titre de l'annonce -->
       <h1 class="text-3xl font-semibold text-gray-800">{{ listing.title }}</h1>
   
@@ -15,11 +15,17 @@
       <p class="text-lg text-gray-600 mt-4">{{ listing.description }}</p>
   
       <!-- Détails -->
-      <div class="mt-4 text-gray-700">
-        <p><strong>Type:</strong> {{ listing.type }}</p>
-        <p><strong>Wilaya:</strong> {{ listing.wilaya }}</p>
-        <p><strong>Number of Rooms:</strong> {{ listing.numberOfRooms }}</p>
-        <p><strong>Price (TND):</strong> {{ listing.price | currency:'TND' }}</p>
+      <div class="mt-6 grid grid-cols-2 gap-4 text-gray-700">
+        <div>
+          <p><strong>Type:</strong> {{ listing.type === 'sale' ? 'À vendre' : 'À louer' }}</p>
+          <p><strong>Ville:</strong> {{ listing.location }}</p>
+          <p><strong>Prix:</strong> {{ listing.price | currency:'TND':'symbol':'1.0-0' }}</p>
+        </div>
+        <div>
+          <p><strong>Chambres:</strong> {{ listing.bedrooms }}</p>
+          <p><strong>Salles de bain:</strong> {{ listing.bathrooms }}</p>
+          <p><strong>Superficie:</strong> {{ listing.area }} m²</p>
+        </div>
       </div>
   
       <!-- Affichage des photos -->
@@ -31,9 +37,10 @@
   
         <!-- Miniatures des images -->
         <div class="grid grid-cols-4 gap-4">
-          <div *ngFor="let photo of listing.photos">
-            <img [src]="photo" alt="Listing photo" class="w-full h-24 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300"
-                 (click)="changeMainImage(photo)">
+          <div *ngFor="let image of listing.images" class="cursor-pointer">
+            <img [src]="image" alt="Listing image" 
+                 class="w-full h-24 object-cover rounded-md hover:opacity-75 transition duration-300"
+                 (click)="changeMainImage(image)">
           </div>
         </div>
       </div>
@@ -42,12 +49,12 @@
       <div class="mt-8 flex justify-end space-x-6">
         <!-- Update Button -->
         <button (click)="onUpdateListing()" class="px-6 py-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition duration-300">
-          Update
+          Modifier
         </button>
   
         <!-- Delete Button -->
         <button (click)="onDeleteListing()" class="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300">
-          Delete
+          Supprimer
         </button>
       </div>
     </div>

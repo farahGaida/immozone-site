@@ -1,87 +1,36 @@
-<div class="relative flex min-h-screen">
-    <!-- Vidéo de fond en boucle -->
-    <div class="absolute inset-0 z-0 overflow-hidden">
-      <video autoplay muted loop class="w-full h-full object-cover">
-        <source src="/assets/login.mp4" type="video/mp4">
-        <div class="absolute inset-0 bg-gradient-to-r from-[#4843D9] to-[#6A64F1]"></div>
-      </video>
-      <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Sign in to your account
+      </h2>
     </div>
-  
-    <!-- Formulaire à droite -->
-    <div class="relative z-10 flex w-full lg:w-1/2 justify-end items-center min-h-screen ml-auto">
-      <div class="w-full max-w-md px-8 py-12 bg-gray-200 rounded-xl shadow-2xl mr-40">
-        <div class="text-center mb-8">
-          <h1 class="text-3xl font-bold text-[#4843D9]">Admin Login</h1>
-          <!-- <p class="text-gray-600 mt-2">Accès sécurisé au tableau de bord</p> -->
+    <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="rounded-md shadow-sm -space-y-px">
+        <div>
+          <label for="email" class="sr-only">Email address</label>
+          <input id="email" formControlName="email" type="email" required
+            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            placeholder="Email address">
         </div>
-  
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
-          <!-- Champ Email -->
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              formControlName="email"
-              class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4843D9] focus:border-[#4843D9] transition-all"
-              [ngClass]="{ 'border-red-500': submitted && getControl('email')?.errors }"
-            >
-            <div *ngIf="submitted && getControl('email')?.errors" class="text-red-500 text-xs mt-1">
-              <div *ngIf="getControl('email')?.hasError('required')">L'email est requis</div>
-              <div *ngIf="getControl('email')?.hasError('email')">L'email n'est pas valide</div>
-            </div>
-          </div>
-  
-          <!-- Champ Mot de passe -->
-          <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
-            <input 
-              type="password" 
-              id="password" 
-              formControlName="password"
-              class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4843D9] focus:border-[#4843D9] transition-all"
-              [ngClass]="{ 'border-red-500': submitted && getControl('password')?.errors }"
-            >
-            <div *ngIf="submitted && getControl('password')?.errors" class="text-red-500 text-xs mt-1">
-              <div *ngIf="getControl('password')?.hasError('required')">Le mot de passe est requis</div>
-              <div *ngIf="getControl('password')?.hasError('minlength')">
-                Le mot de passe doit contenir au moins 6 caractères
-              </div>
-            </div>
-          </div>
-  
-          <!-- Checkbox Remember Me -->
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <input 
-                id="rememberMe" 
-                type="checkbox" 
-                formControlName="rememberMe"
-                class="h-4 w-4 text-[#4843D9] focus:ring-[#4843D9] border-gray-300 rounded"
-              >
-              <label for="rememberMe" class="ml-2 block text-sm text-gray-700">Se souvenir de moi</label>
-            </div>
-  
-            <div class="text-sm">
-              <a href="#" class="font-medium text-[#4843D9] hover:text-[#3a36b8]">Mot de passe oublié?</a>
-            </div>
-          </div>
-  
-          <!-- Bouton Submit -->
-          <div>
-            <button 
-              type="submit" 
-              class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#4843D9] hover:bg-[#3a36b8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4843D9] transition-colors"
-            >
-              Se connecter
-            </button>
-          </div>
-        </form>
-  
-        <div class="mt-8 text-center text-sm text-gray-500">
-            <p>Only authorized personnel can access the dashboard</p>
-          </div>
+        <div>
+          <label for="password" class="sr-only">Password</label>
+          <input id="password" formControlName="password" type="password" required
+            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            placeholder="Password">
         </div>
       </div>
-    </div>
+
+      <div *ngIf="errorMessage" class="text-red-500 text-sm text-center">
+        {{ errorMessage }}
+      </div>
+
+      <div>
+        <button type="submit"
+          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          Sign in
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

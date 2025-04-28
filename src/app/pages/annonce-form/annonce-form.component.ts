@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Import FormBuilder et Validators
-import { WILAYAS } from 'src/app/shared/wilayaData'; // Assurez-vous que le chemin est correct
-import Swal from 'sweetalert2'; // Import SweetAlert
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ListingService } from '../../services/listing.service';
+import { TUNISIAN_CITIES } from '../../constants/tunisian-cities';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-annonce-form',
@@ -9,59 +11,92 @@ import Swal from 'sweetalert2'; // Import SweetAlert
   styleUrls: ['./annonce-form.component.css']
 })
 export class AnnonceFormComponent implements OnInit {
-  wilayas = WILAYAS;
+  cities = TUNISIAN_CITIES;
   annonce: any = {};
   isEditMode = false;
   selectedFiles: File[] = [];
   previewUrls: string[] = [];
-  annonceForm: FormGroup; // Déclaration de annonceForm
-  
-  constructor(private fb: FormBuilder) {
-    // Initialisation de annonceForm dans le constructeur
+  annonceForm: FormGroup;
+  submitted = false;
+  successMessage = '';
+
+  constructor(
+    private fb: FormBuilder,
+    private listingService: ListingService,
+    private router: Router
+  ) {
     this.annonceForm = this.fb.group({
-      titre: ['', Validators.required],
-      description: ['', Validators.required],
-      type: ['', Validators.required],
-      wilaya: ['', Validators.required],
-      pieces: ['', [Validators.required, Validators.min(1)]],
-      prix: ['', [Validators.required, Validators.min(0)]]
+      title: ['', [Validators.required, Validators.minLength(5)]],
+      description: ['', [Validators.required, Validators.minLength(20)]],
+      price: ['', [Validators.required, Validators.min(0)]],
+      type: ['sale', Validators.required],
+      location: ['', Validators.required],
+      bedrooms: ['', [Validators.required, Validators.min(0)]],
+      bathrooms: ['', [Validators.required, Validators.min(0)]],
+      area: ['', [Validators.required, Validators.min(0)]],
+      images: [[]]
     });
   }
 
-  ngOnInit() {
-    // Vous pouvez également faire l'initialisation ici si nécessaire
+  ngOnInit(): void {
+    // No initialization needed
   }
 
-  // Méthode pour gérer le changement de fichiers (photo)
-  onFileChange(event: any) {
-    const files: File[] = Array.from(event.target.files);
+  get f() {
+    return this.annonceForm.controls;
+  }
 
-    if (files.length + this.selectedFiles.length > 5) {
-      alert('Vous ne pouvez télécharger que 5 photos maximum.');
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    if (files) {
+      this.previewUrls = [];
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: ProgressEvent<FileReader>) => {
+          if (e.target?.result) {
+            this.previewUrls.push(e.target.result as string);
+          }
+        };
+        reader.readAsDataURL(files[i]);
+      }
+      this.annonceForm.patchValue({
+        images: files
+      });
+    }
+  }
+
+  onSubmit() {
+    this.submitted = true;
+
+    if (this.annonceForm.invalid) {
       return;
     }
 
-    this.selectedFiles = [...this.selectedFiles, ...files];
-    this.previewUrls = [];
+    const formData = this.annonceForm.value;
+    const newListing = {
+      title: formData.title,
+      description: formData.description,
+      price: Number(formData.price),
+      type: formData.type,
+      location: formData.location,
+      bedrooms: Number(formData.bedrooms),
+      bathrooms: Number(formData.bathrooms),
+      area: Number(formData.area),
+      images: this.previewUrls
+    };
 
-    this.selectedFiles.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.previewUrls.push(e.target.result);
-      };
-      reader.readAsDataURL(file);
+    this.listingService.addListing(newListing);
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Succès!',
+      text: 'Annonce ajoutée avec succès!',
+      timer: 2000,
+      showConfirmButton: false
+    }).then(() => {
+      this.router.navigate(['/dashboard/admin/view']);
     });
-  }
-
-  // Méthode pour soumettre l'annonce
-  onSubmit() {
-    if (this.annonceForm.valid) {
-      console.log('Annonce soumise:', this.annonceForm.value);
-      console.log('Photos sélectionnées:', this.selectedFiles);
-      // Vous pouvez envoyer les données au backend ici
-    } else {
-      console.log('Formulaire invalide');
-    }
   }
 
   // Méthode pour annuler et réinitialiser le formulaire
@@ -69,5 +104,6 @@ export class AnnonceFormComponent implements OnInit {
     this.annonceForm.reset();
     this.selectedFiles = [];
     this.previewUrls = [];
+    this.router.navigate(['/dashboard/admin/view']);
   }
 }

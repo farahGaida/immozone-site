@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ContactService } from '../../services/contact.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-contact',
@@ -8,8 +10,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ContactComponent {
   contactForm: FormGroup;
+  isSubmitting = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private contactService: ContactService
+  ) {
     this.contactForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       subject: ['', [Validators.required, Validators.minLength(3)]],
@@ -18,12 +24,35 @@ export class ContactComponent {
   }
 
   onSubmit() {
-    if (this.contactForm.valid) {
-      console.log('Form Data:', this.contactForm.value);
-      // Ici tu peux envoyer les données à ton backend
+    if (this.contactForm.valid && !this.isSubmitting) {
+      this.isSubmitting = true;
+      
+      this.contactService.submitContactForm(this.contactForm.value).subscribe({
+        next: (success) => {
+          if (success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Message Sent!',
+              text: 'Thank you for contacting us. We will get back to you soon.',
+              confirmButtonText: 'OK'
+            }).then(() => {
+              this.contactForm.reset();
+              this.isSubmitting = false;
+            });
+          }
+        },
+        error: (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'There was a problem sending your message. Please try again later.',
+            confirmButtonText: 'OK'
+          });
+          this.isSubmitting = false;
+        }
+      });
     } else {
-      console.log('Form Not Valid');
-      this.contactForm.markAllAsTouched(); // Pour afficher les erreurs
+      this.contactForm.markAllAsTouched();
     }
   }
 }

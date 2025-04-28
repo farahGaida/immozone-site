@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
@@ -19,6 +18,9 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { CardViewListingComponent } from './components/card-view-listing/card-view-listing.component';
 import { ListingViewComponent } from './pages/listing-view/listing-view.component';
 import { ListingDetailsComponent } from './pages/listing-details/listing-details.component';
+import { LoginService } from './services/login.service';
+import { ListingService } from './services/listing.service';
+import { ContactService } from './services/contact.service';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,7 @@ import { ListingDetailsComponent } from './pages/listing-details/listing-details
     RouterModule.forRoot([]),
     FormsModule
   ],
-  providers: [],
+  providers: [LoginService, ListingService, ContactService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
